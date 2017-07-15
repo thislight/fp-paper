@@ -41,18 +41,17 @@ class Question(object):
         doc = questions.find_one({"id": random.randint(1, num_of_qu)})
         if doc:
             return cls(doc.question, (doc.true, doc.falses))
-        else:
-            return None
 
     @classmethod
     def random(cls, num=25):
-        for x in range(1, 25):
+        for x in range(1, num):
             yield cls.random_one(num_of_qu=questions.count())
 
     @classmethod
     def find(cls, question):
         doc = questions.find_one({"question":question})
-        return cls(doc.question, (doc.true, doc.falses))
+        if doc:
+           return cls(doc.question, (doc.true, doc.falses))
 
     @staticmethod
     def unpack(q):

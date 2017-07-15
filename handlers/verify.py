@@ -40,6 +40,7 @@ class VerifyHandler(RequestHandler):
                     "code": code,
                     "error": "argument code is empty"
                     })
+            self.set_status(400)
             return
         result = self.codes.find({
             "code": code
@@ -55,4 +56,5 @@ class VerifyHandler(RequestHandler):
                     "code": code,
                     "error": "code not found"
                     })
+            self.set_status(400)
 

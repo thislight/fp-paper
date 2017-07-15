@@ -5,8 +5,6 @@ from helpers.db import DatabaseManager
 
 
 class QuestionHandler(object):
-    def initialize(self):
-        self.questions = DatabaseManager.get_client().questions
 
     def post(self):
         req = json.loads(self.request.body)
@@ -15,14 +13,11 @@ class QuestionHandler(object):
                 "ok": 1,
                 "error": "question has been in database"
                 })
-            return
-        Question(
-                req["question"],
-                (
+            return None
+        Question(req["question"], (
                     req["true"],
                     req["falses"]
-                    )
-                ).save()
+                    )).save()
         self.write({
             "ok":0
             })

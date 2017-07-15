@@ -32,7 +32,7 @@ class PaperHandler(RequestHandler):
         n = -1
         for q in quz:
             n += 1
-            yield n, *(Question.unpack(q))
+            yield n, Question.unpack(q)
 
     def get(self):
         self.render(
