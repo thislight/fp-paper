@@ -15,12 +15,24 @@ MARK_OF_ONE_QUESTION = 5
 class PaperHandler(RequestHandler):
     def initialize(self):
         self.codes = DatabaseManager.get_client().codes
+        self.papers = DatabaseManager.get_client().papers
+
+    def _get_questions(self):
+        return [v for v in Question.random(20)]
 
     def get_questions(self):
-        n = 0
-        for q in Question.random(20):
-            yield n, Question.unpack(q)
+        quz = self._get_questions()
+        true_answers = [ q.true_answer for q in quz ]
+        paper_id = secrets.token_urlsafe()
+        self.set_secret_cookie("paper_id",paper_id)
+        self.papers.insert({
+            "id": paper_id,
+            "answers": true_answers
+            })
+        n = -1
+        for q in quz:
             n += 1
+            yield n, *(Question.unpack(q))
 
     def get(self):
         self.render(
@@ -29,12 +41,15 @@ class PaperHandler(RequestHandler):
             )
 
     def get_marks(self, answers):
+        paperid = self.get_secret_cookie("paper_id")
+        true_answers = self.paper.find_one({
+            "paper_id":paperid
+            })["answers"]
         mark = 0
-        for answer in answers:
-            question = answer["question"]
-            user_answer = answer["answer"]
-            q = Question.find(question)
-            if user_answer == q.true_anwser:
+        n = -1
+        for user_answer in answers:
+            n += 1
+            if user_answer == true_anwsers[n]:
                 mark += MARK_OF_ONE_QUESTION
         return mark
 

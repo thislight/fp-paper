@@ -16,7 +16,7 @@ class Question(object):
         self.question = question
         self.true_anwser = anwsers[0]
         self.false_answers = anwsers[1]
-    
+
     def save(self):
         """Save question to database
         struct:
@@ -33,7 +33,7 @@ class Question(object):
             "true": self.true_anwser,
             "falses": self.false_answers
         })
-    
+
     @classmethod
     def random_one(cls, num_of_qu=None):
         if not num_of_qu:
@@ -43,12 +43,12 @@ class Question(object):
             return cls(doc.question, (doc.true, doc.falses))
         else:
             return None
-    
+
     @classmethod
     def random(cls, num=25):
         for x in range(1, 25):
             yield cls.random_one(num_of_qu=questions.count())
-    
+
     @classmethod
     def find(cls, question):
         doc = questions.find_one({"question":question})
