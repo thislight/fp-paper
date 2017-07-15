@@ -40,6 +40,7 @@ class VerifyHandler(RequestHandler):
                     "code": code,
                     "error": "argument code is empty"
                     })
+            return
         result = self.codes.find({
             "code": code
             }).count()

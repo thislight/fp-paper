@@ -4,11 +4,13 @@ from tornado.web import Application
 
 from handlers.asking import PaperHandler
 from handlers.verify import VerifyHandler
+from handlers.questions import QuestionHandler
 
 
 route_mapping = [
         (r"/verify", VerifyHandler),
-        (r"/paper", PaperHandler)
+        (r"/paper", PaperHandler),
+        (r"/questions/add",QuestionHandler)
         ]
 
 
