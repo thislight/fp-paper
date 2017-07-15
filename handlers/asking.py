@@ -15,7 +15,7 @@ MARK_OF_ONE_QUESTION = 5
 class PaperHandler(RequestHandler):
     def initialize(self):
         self.codes = DatabaseManager.get_client().codes
-    
+
     def get_questions(self):
         n = 0
         for q in Question.random(20):
@@ -27,7 +27,7 @@ class PaperHandler(RequestHandler):
             "asking.html",
             get_questions=self.get_questions,
             )
-    
+
     def get_marks(self, answers):
         mark = 0
         for answer in answers:
@@ -37,7 +37,7 @@ class PaperHandler(RequestHandler):
             if user_answer == q.true_anwser:
                 mark += MARK_OF_ONE_QUESTION
         return mark
-    
+
     def post(self):
         req = json.loads(self.request.body)
         mark = self.get_marks(req["answers"])
@@ -54,6 +54,7 @@ class PaperHandler(RequestHandler):
         else:
             self.write({
                 "ok": 1,
+                "redirect": "/result/fail",
                 "error": "mark is lower than 60",
                 "mark": mark
             })
