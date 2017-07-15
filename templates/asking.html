@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>问答</title>
+{% end %}
+
+{% block content %}
+<div id="id_app">
+<form>
+        {% for num,q, answers in get_questions() %}
+            <label class="mr-sm-2" for="id_quz_{{ num }}">{{ q }}</label>
+  <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="id_quz_{{ num }}">
+    <option selected>选择一个答案...</option>
+    {% for answer in answers %}
+    <option value="{{ answer }}">{{ answer }}</option>
+    {% end %}
+  </select>
+
+        {% end %}
+</form>
+</div>
+
+    <script>
+    </script>
+{% end %}

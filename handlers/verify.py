@@ -5,31 +5,53 @@ from helpers.db import DatabaseManager
 
 class VerifyHandler(RequestHandler):
     def initialize(self):
-        self.emails = DatabaseManager.get_client().emails
+        self.codes = DatabaseManager.get_client().codes
 
     def get(self):
-        email = self.get_argument(
-                "email",
+        """Verify a code that in database
+        Usage:
+        GET https://example.com/verify?code=example
+
+        if passed:
+            {
+                "ok":0,
+                "code":"example"
+            }
+        if not 'code'(such as '/verify'):
+            {
+                "ok": 1,
+                "code": "example",
+                "error": "argument code is empty"
+            }
+        if 'code' not found in database:
+            {
+                "ok": 2,
+                "code": "example",
+                "error": "code not found"
+            }
+        """
+        code = self.get_argument(
+                "code",
                 default=None
                 )
-        if not email:
-            return {
+        if not code:
+            self.write({
                     "ok": 1,
-                    "email": email,
-                    "error": "field email is empty"
-                    }
-        result = self.emails.find({
-            "email": email
+                    "code": code,
+                    "error": "argument code is empty"
+                    })
+        result = self.codes.find({
+            "code": code
             }).count()
         if result > 0:
-            return {
+            self.write({
                     "ok": 0,
-                    "email": email
-                    }
+                    "code": code
+                    })
         else:
-            return {
+            self.write({
                     "ok": 2,
-                    "email": email,
-                    "error": "email don't pass exam"
-                    }
+                    "code": code,
+                    "error": "code not found"
+                    })
 
