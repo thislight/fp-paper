@@ -1,9 +1,10 @@
 """Some helpers of database
 """
+import os
 from pymongo import MongoClient
 
 
-MONGOURL = "mongodb://localhost"
+DEFAULTMONGOURL = "mongodb://localhost"
 
 
 class DatabaseManager(object):
@@ -14,5 +15,9 @@ class DatabaseManager(object):
         """Get a `Database` of app
         """
         if not cls._client:
-            cls._client = MongoClient(MONGOURL)["reg-exam"]
+            cls._client = MongoClient(cls.get_uri())["reg-exam"]
         return cls._client
+
+    @staticmethod
+    def get_uri():
+        return os.environ.get("PFPAPER_MONGO",default=DEFAULTMONGOURL)
