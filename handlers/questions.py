@@ -4,7 +4,7 @@ from tornado.web import RequestHandler
 from helpers.db import DatabaseManager
 
 
-class QuestionAddHandler(object):
+class QuestionAddHandler(RequestHandler):
     def initialize(self):
         self.questions = DatabaseManager.get_client().questions
 
