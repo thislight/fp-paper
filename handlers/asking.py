@@ -35,10 +35,9 @@ class PaperHandler(RequestHandler):
             yield n, Question.unpack(q)
 
     def get(self):
-        self.render(
-            "asking.html",
-            get_questions=self.get_questions,
-            )
+        self.render("asking.html",
+                get_questions = self.get_questions
+                )
 
     def get_marks(self, answers):
         paperid = self.get_secret_cookie("paper_id")
@@ -64,6 +63,7 @@ class PaperHandler(RequestHandler):
             self.write({
                 "ok": 0,
                 "redirect": "/result/done?code={}".format(code),
+                "code": code,
                 "mark": mark
             })
         else:
